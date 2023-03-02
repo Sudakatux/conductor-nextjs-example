@@ -3,13 +3,14 @@ const {
   orkesConductorClient,
 } = require("@io-orkes/conductor-javascript");
 
-const sendEmailWorker = () => {
+const returnHelloWorker = () => {
   return {
-    taskDefName: "send_email",
+    taskDefName: "will_return_hello",
     execute: async ({ inputData }) => {
-      /* const email = inputData?.email; */
-      console.log("SENDING EMAIL TO ",inputData);
       return {
+        outputData:{
+          message: "Hello World"
+        },
         status: "COMPLETED",
       };
     },
@@ -21,7 +22,7 @@ const nextConfig = {
     conductor: {
       keyId: process.env.KEY,
       keySecret: process.env.SECRET,
-      serverUrl: "http://localhost:3456/api",
+      serverUrl: "https://conductor-nextjs-example-ehib.vercel.app/api",
     },
     workflows: {
       checkout: `${process.env.CHECKOUT_WF_NAME || "MyCheckout2"}`,
@@ -48,7 +49,7 @@ module.exports = (phase) => {
   (async () => {
     const clientPromise = orkesConductorClient(playConfig);
     const client = await clientPromise;
-    const runner = new TaskManager(client, [sendEmailWorker()]);
+    const runner = new TaskManager(client, [returnHelloWorker()]);
     runner.startPolling();
   })();
 
