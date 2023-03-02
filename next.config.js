@@ -22,7 +22,7 @@ const nextConfig = {
     conductor: {
       keyId: process.env.KEY,
       keySecret: process.env.SECRET,
-      serverUrl: `http://${NEXT_PUBLIC_VERCEL_URL}/api`,
+      serverUrl: process.env.SERVER_URL,
     },
     workflows: {
       checkout: `${process.env.CHECKOUT_WF_NAME || "MyCheckout2"}`,
